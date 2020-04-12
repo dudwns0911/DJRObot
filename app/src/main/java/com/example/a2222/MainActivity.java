@@ -18,8 +18,10 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     SpeechRecognizer mRecognizer;
     MediaPlayer mp;
+    TextView tvMusicTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         cl = (ConstraintLayout) findViewById(R.id.cl);
         iv = (ImageView) findViewById(R.id.iv);
+
+        tvMusicTitle = findViewById(R.id.tv_music_title);
 
         mp = new MediaPlayer();
 
@@ -98,15 +103,18 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> mResult = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             String[] rs = new String[mResult.size()];
             mResult.toArray(rs);
+            tvMusicTitle.setText(rs[0]);
 
             if (rs[0].equals("직진")) {
-                iv.setImageResource(R.drawable.img_straight);
+                iv.setImageResource(R.drawable.img_joysu);
                 mp = MediaPlayer.create(MainActivity.this, R.raw.straight);
                 mp.start();
             } else if (rs[0].equals("돌덩이")) {
                 iv.setImageResource(R.drawable.img_rock);
                 mp = MediaPlayer.create(MainActivity.this, R.raw.rock);
                 mp.start();
+            }else if(rs[0].equals("빅스비")){
+                tts.speak("네 주인님 무엇을 도와드릴까요?",TextToSpeech.QUEUE_FLUSH,null);
             }
         }
 
